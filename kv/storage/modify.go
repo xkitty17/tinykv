@@ -2,6 +2,7 @@ package storage
 
 // Modify is a single modification to TinyKV's underlying storage.
 type Modify struct {
+	// empty interface
 	Data interface{}
 }
 
@@ -17,6 +18,7 @@ type Delete struct {
 }
 
 func (m *Modify) Key() []byte {
+	// go type switch
 	switch m.Data.(type) {
 	case Put:
 		return m.Data.(Put).Key
@@ -27,6 +29,7 @@ func (m *Modify) Key() []byte {
 }
 
 func (m *Modify) Value() []byte {
+	// type assertion 是 Put 类型的话, ok = true
 	if putData, ok := m.Data.(Put); ok {
 		return putData.Value
 	}

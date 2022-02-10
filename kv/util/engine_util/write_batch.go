@@ -6,14 +6,18 @@ import (
 	"github.com/pingcap/errors"
 )
 
+// WriteBatch 批量写操作
 type WriteBatch struct {
-	entries       []*badger.Entry
+	// kv pairs
+	entries []*badger.Entry
+	// 大概和回滚操作相关
 	size          int
 	safePoint     int
 	safePointSize int
 	safePointUndo int
 }
 
+// 据说是需要保存的三种column
 const (
 	CfDefault string = "default"
 	CfWrite   string = "write"
@@ -71,6 +75,7 @@ func (wb *WriteBatch) RollbackToSafePoint() {
 	wb.size = wb.safePointSize
 }
 
+// WriteToDB 将WriteBatch中的entries内容在DB中操作
 func (wb *WriteBatch) WriteToDB(db *badger.DB) error {
 	if len(wb.entries) > 0 {
 		err := db.Update(func(txn *badger.Txn) error {
