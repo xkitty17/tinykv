@@ -14,6 +14,7 @@ type StandAloneStorage struct {
 
 func NewStandAloneStorage(conf *config.Config) *StandAloneStorage {
 	// Your Code Here (1).
+
 	return nil
 }
 
